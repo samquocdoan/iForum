@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteBase /LearnRouting/
+
+# Nếu là file hoặc thư mục thật, thì không làm gì cả
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Nếu không phải thì tất cả các request sẽ được chuyển đến index.php
+RewriteRule ^(.*)$ index.php [QSA,L]
