@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Models;
+
+use PDO;
+
 class User
 {
     private $db;
@@ -16,18 +20,33 @@ class User
     public $status;
     public $avatarPath;
     public $coverPath;
-    public $created_at;
+    public $createdAt;
 
     public function __construct($db)
     {
         $this->db = $db;
     }
 
-    public function setUID($uid) {
-        $this->uid = $uid;
+    public function getById() {
+        $query = "SELECT name, birthday, gender, address, email, status, role, avatar_path, cover_path, created_at WHERE uid=:uid";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':uid', $this->uid);
+        $stmt->execute();
+        return $stmt;
     }
 
-    public function create() {
+    public function login()
+    {
+        $query = "SELECT uid, name, email, password, role, status
+        FROM {$this->tableName} WHERE email=:email";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':email', $this->email);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    public function create()
+    {
         $query = "INSERT INTO {$this->tableName}
         (`name`, `email`, `password`)
         VALUES (:name, :email, :password)";
@@ -42,9 +61,18 @@ class User
         }
     }
 
+    public function delete() {
+        $query = "SELECT password FROM {$this->tableName} WHERE id=:id AND email =:email";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id', $this->uid);
+        $stmt->bindParam(':email', $this->email);
+        $stmt->execute();
+        return $stmt;
+    }
+
     public function getAll()
     {
-        $query = "SELECT * FROM " . $this->tableName;
+        $query = "SELECT * FROM {$this->tableName}";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt;

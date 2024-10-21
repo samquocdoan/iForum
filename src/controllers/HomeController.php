@@ -1,6 +1,11 @@
 <?php
-require_once __DIR__ . '/../core/Controller.php';
-require_once __DIR__ . '/../models/Post.php';
+
+namespace App\Controllers;
+
+use App\Core\Controller;
+use App\Models\Post;
+use PDO;
+
 class HomeController extends Controller
 {
     private $post;

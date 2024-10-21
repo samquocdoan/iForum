@@ -1,8 +1,11 @@
 <?php
 
-require_once __DIR__ . '/../models/Post.php';
-require_once __DIR__ . '/../core/Response.php';
-require_once __DIR__ . '/../core/Controller.php';
+namespace App\Controllers;
+
+use App\Core\Controller;
+use App\Models\Post;
+use App\Core\Response;
+use PDO;
 
 class PostController extends Controller {
     public $db;

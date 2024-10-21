@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Core;
+
+use Exception;
+
 class Router
 {
     private $routes = [];
@@ -26,6 +30,14 @@ class Router
         $this->routes['POST'][$this->convertUriToRegex($uri)] = $controller;
     }
 
+    public function delete($uri, $controller)
+    {
+        if (!isset($this->routes['DELETE'])) {
+            $this->routes['DELETE'] = [];
+        }
+        $this->routes['DELETE'][$this->convertUriToRegex($uri)] = $controller;
+    }
+
     private function convertUriToRegex($uri)
     {
         return '#^' . preg_replace('/\{([a-zA-Z0-9_]+)\}/', '(?P<\1>[a-zA-Z0-9_-]+)', $uri) . '$#';
@@ -38,10 +50,11 @@ class Router
                 $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
 
                 $controllerAction = explode('@', $controller);
-                $controllerName = $controllerAction[0];
+                $controllerName = "App\\Controllers\\" . $controllerAction[0];
                 $methodName = $controllerAction[1];
 
-                require_once "src/controllers/$controllerName.php";
+                require_once __DIR__ . '/../controllers/' . $controllerAction[0] . '.php';
+
                 $controllerInstance = new $controllerName($this->db);
 
                 if (!method_exists($controllerInstance, $methodName)) {

@@ -5,26 +5,27 @@
 }
 
 :root {
-    --colorAccent: #5AAFFF;
-    --colorOnAccent: #FFF;
     --colorPrimary: #FFF;
     --colorOnPrimary: #333;
-    --colorSecondary: #999;
+    --colorSecondary: #ececec;
     --colorOnSecondary: #333;
-    --colorOpacity03: rgba(0, 0, 0, .3);
-    --colorOpacity02: rgba(0, 0, 0, .2);
-    --colorOpacity01: rgba(0, 0, 0, .1);
-}
-
-html, body {
-    height: 100%;
+    --colorAccent: #5aafff;
+    --colorOnAccent: #FFF;
+    --colorWarning: #e0aa44;
+    --colorOnWarning: #FFF;
+    --colorError: #f86d6d;
+    --colorOnError: #FFF;
+    --colorSuccess: #45c565;
+    --colorOnSuccess: #FFF;
+    --opacity_0_2: rgba(0, 0, 0, .2);
+    --opacity_0_4: rgba(0, 0, 0, .4);
+    --opacity_0_6: rgba(0, 0, 0, .6);
 }
 
 body {
     font-family: sans-serif;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
 }
 
 button, a, input {
@@ -220,14 +221,13 @@ a {
 
 main {
     flex: 1;
-    width: 100%;
 }
 
 /* Header */
 header {
     position: sticky;
     top: 0;
-    border-bottom: 1.5px solid var(--colorOpacity01);
+    border-bottom: 1.5px solid var(--opacity_0_2);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -248,7 +248,7 @@ header .container {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: var(--colorOpacity01);
+    background: var(--opacity_0_2);
 }
 
 /* Scroll bar */
@@ -273,7 +273,7 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .post {
-    border: 1.5px solid var(--colorOpacity01);
+    border: 1.5px solid var(--opacity_0_2);
     border-radius: 8px;
     padding: 16px;
     display: flex;
@@ -297,8 +297,9 @@ body::-webkit-scrollbar-thumb:hover {
 
 /* Footer */
 footer {
+    border-top: 1.5px solid var(--colorSecondary);
     padding: 8px 0;
-    border: 1.5px solid var(--colorOpacity01);
+    margin-top: auto;
 }
 
 /* 404 */
@@ -322,5 +323,32 @@ footer {
     margin: 16px 0;
     padding: 8px;
     border-radius: 8px;
-    background: var(--colorOpacity01);
+    background: var(--opacity_0_2);
+}
+
+/* Error */
+.error {
+    color: var(--colorError);
+    padding: 8px 0;
+}
+
+/* Divider */
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 16px 0;
+}
+
+.divider hr {
+    flex-grow: 1;
+    border: 0;
+    border-top: 1px solid var(--opacity_0_2);
+    margin: 0 10px;
+}
+
+.divider p {
+    margin: 0;
+    font-weight: normal;
+    color: var(--colorOnSecondary);
 }

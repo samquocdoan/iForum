@@ -29,7 +29,7 @@
                     </div>
                 </div>
 
-                <h1 class="title"><?php echo $post['title']; ?></h1>
+                <h1 class="title title-extra-large"><?php echo $post['title']; ?></h1>
                 <div class="content"><?php echo $post['content']; ?></div>
                 <div class="interacts row-16">
                     <div class="row-8">

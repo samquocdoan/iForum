@@ -8,3 +8,44 @@
 - Edit post
 - Edit profile
 - updating...
+
+/ten-du-an/
+    /assets/
+        /css/
+        /js/
+        ...
+    /config/
+        /database.php
+        /config.php
+        ...
+    /src/
+        /controllers/
+            /UserController.php
+            /PostController.php
+            ...
+        /core/
+            /Router.php
+            ...
+        /models/
+            /user.php
+            /post.php
+            ...
+        /views/
+            /home/
+                /...
+            /layouts/
+                /...
+        /routes/
+            /web.php
+            /...
+        /manage/
+            /sessionManager.php
+            /...
+        /services/
+            /...
+    /vendor/
+        /composer/
+            /...
+        /...
+    /.htaccess
+    /index.php

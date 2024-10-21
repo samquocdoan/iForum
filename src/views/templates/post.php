@@ -8,7 +8,7 @@
     </div>
 
     <a class="post-title word-action" href="/post/<?php echo $postData['id']; ?>">
-        <h1><?php echo htmlspecialchars($postData['title']); ?></h1>
+        <h1 class="title-extra-large"><?php echo htmlspecialchars($postData['title']); ?></h1>
     </a>
 
     <div class="post-interacts row-16">

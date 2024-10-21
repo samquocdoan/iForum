@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Models;
+
+use PDO;
+
 class Post {
     private $db;
     private $tableName = 'posts';
