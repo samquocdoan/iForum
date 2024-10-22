@@ -41,4 +41,7 @@ $router->post('/user/update', 'UserController@update');
 $router->post('/user/update-password', 'UserController@updatePassword');
 $router->get('/user/update-password', 'UserController@updatePassword');
 
+// Test Send mail
+$router->put('/user/create', 'UserController@create');
+
 $router->handleRequest($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);

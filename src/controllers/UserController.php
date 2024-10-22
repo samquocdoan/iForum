@@ -7,10 +7,12 @@ use App\Core\Controller;
 use App\Core\Response;
 use App\Manage\InputManager;
 use App\Manage\SessionManager;
+use App\Services\MyPhpMailer;
 use App\Services\Validator;
 use App\Services\UserService;
 
 use PDO;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class UserController extends Controller
 {
@@ -86,6 +88,9 @@ class UserController extends Controller
         switch ($_SERVER['REQUEST_METHOD']) {
             case 'GET':
                 $this->render('user/create');
+                break;
+            case 'PUT':
+                MyPhpMailer::sendRegisterConfirm('samquocdoan.bank@gmail.com', 'Sam Quoc Doan');
                 break;
             case 'POST':
                 $this->user->name = trim(InputManager::inputJson('name'));
@@ -237,11 +242,12 @@ class UserController extends Controller
                     Response::error(message: "Mật khẩu mới không trùng khớp.", code: 401);
                     return;
                 }
-                
+
                 if (!password_verify($oldPassword, $user['password'])) {
                     Response::error(message: "Mật khẩu cũ không chính xác.", code: 401);
                     return;
                 }
+
                 $isValidPassword = Validator::password($newPassword);
                 if (!$isValidPassword['success']) {
                     Response::error(message: $isValidPassword['message'], code: 400);

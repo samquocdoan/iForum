@@ -26,6 +26,7 @@ body {
     font-family: sans-serif;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
 }
 
 button, a, input {
@@ -248,7 +249,7 @@ header .container {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: var(--opacity_0_2);
+    background: var(--colorSecondary);
 }
 
 /* Scroll bar */

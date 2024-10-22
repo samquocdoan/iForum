@@ -38,6 +38,14 @@ class Router
         $this->routes['DELETE'][$this->convertUriToRegex($uri)] = $controller;
     }
 
+    public function put($uri, $controller)
+    {
+        if (!isset($this->routes['PUT'])) {
+            $this->routes['PUT'] = [];
+        }
+        $this->routes['PUT'][$this->convertUriToRegex($uri)] = $controller;
+    }
+
     private function convertUriToRegex($uri)
     {
         return '#^' . preg_replace('/\{([a-zA-Z0-9_]+)\}/', '(?P<\1>[a-zA-Z0-9_-]+)', $uri) . '$#';

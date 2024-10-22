@@ -21,4 +21,8 @@ class UserService {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['count'] > 0;
     }
+
+    public function updateName() {
+        $query = "UPDATE users SET name=:name WHERE uid=:uid";
+    }
 }
