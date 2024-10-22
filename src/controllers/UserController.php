@@ -25,6 +25,15 @@ class UserController extends Controller
         $this->services = new UserService($db, $this->user);
     }
 
+    public function profile()
+    {
+        switch ($_SERVER['REQUEST_METHOD']) {
+            case 'GET':
+                $this->render('user/profile');
+                break;
+        }
+    }
+
     public function login()
     {
         switch ($_SERVER['REQUEST_METHOD']) {
@@ -58,7 +67,6 @@ class UserController extends Controller
 
                 $this->user->name = $user['name'];
                 $this->user->uid = $user['uid'];
-
 
                 // Save session
                 SessionManager::start(); # one week
@@ -158,8 +166,98 @@ class UserController extends Controller
                     Response::error(message: "Đã xảy ra lỗi. Bạn chưa thể xóa tài khoản bây giờ.", code: 500);
                 }
                 break;
+            case "GET":
+                echo "Hello World";
+                break;
             default:
                 Response::error(message: "Method is not allowed.", code: 405);
+                break;
+        }
+    }
+
+    public function update()
+    {
+        $this->user->uid = 22; // Demo
+        $fields = ['name', 'birthday', 'gender', 'address', 'email', 'status', 'role', 'avatar_path'];
+
+        foreach ($fields as $field) {
+            $this->user->$field = InputManager::inputJson($field);
+        }
+
+        $isValidUsername = Validator::name($this->user->name);
+        if (!$isValidUsername['success']) {
+            Response::error(message: $isValidUsername['message'], code: 400);
+            return;
+        }
+
+        $isValidateEmail = Validator::email($this->user->email);
+        if (!$isValidateEmail['success']) {
+            Response::error(message: $isValidateEmail['message'], code: 400);
+            return;
+        }
+
+        $result = $this->user->update();
+        if ($result) {
+            Response::success(message: "Cập nhật thông tin thành công.", code: 200);
+        } else {
+            Response::error(message: "Có lỗi xảy ra. Chưa thể cập nhật thông tin bây giờ.", code: 500);
+        }
+    }
+
+    public function updatePassword()
+    {
+        switch ($_SERVER['REQUEST_METHOD']) {
+            case 'GET':
+                $this->render('user/updatePassword');
+                break;
+            case 'POST':
+                $this->user->uid = 28;
+                $oldPassword = InputManager::inputJson('oldPassword');
+                $newPassword = InputManager::inputJson('newPassword');
+                $newPasswordConfirm = InputManager::inputJson('newPasswordConfirm');
+
+                if (empty($oldPassword) || empty($newPassword) || empty($newPasswordConfirm)) {
+                    Response::error(message: "Tất cả các trường mật khẩu đều bắt buộc.", code: 400);
+                    return;
+                }
+
+                $stmt = $this->user->getById();
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                if (!$user) {
+                    Response::error(message: "Người dùng này không tồn tại.", code: 401);
+                    return;
+                }
+
+                if (intval($user['uid']) !== intval($this->user->uid)) {
+                    Response::error(message: "Có gì đó không đúng. Bạn chưa thể đổi mật khẩu bây giờ.", code: 401);
+                    return;
+                }
+
+                if ($newPassword !== $newPasswordConfirm) {
+                    Response::error(message: "Mật khẩu mới không trùng khớp.", code: 401);
+                    return;
+                }
+                
+                if (!password_verify($oldPassword, $user['password'])) {
+                    Response::error(message: "Mật khẩu cũ không chính xác.", code: 401);
+                    return;
+                }
+                $isValidPassword = Validator::password($newPassword);
+                if (!$isValidPassword['success']) {
+                    Response::error(message: $isValidPassword['message'], code: 400);
+                    return;
+                }
+
+                $this->user->password = password_hash($newPassword, PASSWORD_DEFAULT);
+                $passwordStmt = $this->user->updatePassword();
+                if ($passwordStmt) {
+                    Response::success(message: "Mật khẩu đã được đổi thành công.", code: 200);
+                } else {
+                    Response::error(message: "Đổi mật khẩu thất bại. Thử lại sau.", code: 500);
+                }
+                break;
+            default:
+                Response::error(message: "Method is not allowed", code: 405);
                 break;
         }
     }
