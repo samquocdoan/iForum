@@ -73,8 +73,8 @@ class UserController extends Controller
                 // Save session
                 SessionManager::start(); # one week
                 SessionManager::set('uid', $this->user->uid);
+                SessionManager::set('name', $this->user->name);
                 SessionManager::set('role', $this->user->role);
-                $this->render('user/login');
                 Response::success(message: 'Đăng nhập thành công.', code: 200, data: ['name' => $this->user->name]);
                 break;
             default:
@@ -96,10 +96,15 @@ class UserController extends Controller
                 $this->user->name = trim(InputManager::inputJson('name'));
                 $this->user->email = trim(InputManager::inputJson('email'));
                 $this->user->password = trim(InputManager::inputJson('password'));
+                $passwordConfirm = trim(InputManager::inputJson('passwordConfirm'));
 
-                if (empty($this->user->name) || empty($this->user->email) || empty($this->user->password)) {
+                if (empty($this->user->name) || empty($this->user->email) || empty($this->user->password) || empty($passwordConfirm)) {
                     Response::error(message: "Các thông tin đăng nhập là bắt buộc.", code: 400);
                     return;
+                }
+
+                if ($this->user->password != $passwordConfirm) {
+                    Response::error(message: "Mật khẩu không trùng khớp.", code: 401);
                 }
 
                 $isValidUsername = Validator::name($this->user->name);

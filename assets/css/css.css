@@ -29,7 +29,9 @@ body {
     min-height: 100vh;
 }
 
-button, a, input {
+button,
+a,
+input {
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -211,6 +213,11 @@ a {
     gap: 24px;
 }
 
+/* Shapes */
+.circle-shape {
+    border-radius: 50%;
+}
+
 
 /* Container */
 .container {
@@ -228,7 +235,7 @@ main {
 header {
     position: sticky;
     top: 0;
-    border-bottom: 1.5px solid var(--opacity_0_2);
+    border-bottom: 1.5px solid var(--colorSecondary);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -270,16 +277,18 @@ body::-webkit-scrollbar-thumb:hover {
 
 /* Post */
 .post-list {
-    padding: 16px 0;
+    gap: 16px;
+    position: relative;
 }
 
 .post {
-    border: 1.5px solid var(--opacity_0_2);
+    border: 1.5px solid var(--colorSecondary);
     border-radius: 8px;
     padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 24px;
+    color: var(--colorOnSecondary);
 }
 
 .post .post-interacts {
@@ -292,8 +301,21 @@ body::-webkit-scrollbar-thumb:hover {
 
 /* Sort */
 .sort-container {
-    padding-top: 16px;
+    padding: 16px 0;
+    font-size: 18px;
 }
+
+.sort-container a {
+    padding: 8px 0;
+    color: var(--opacity_0_2);
+    font-weight: bold;
+
+}
+
+.active {
+    color: var(--colorOnSecondary) !important;
+}
+
 
 
 /* Footer */
@@ -324,13 +346,22 @@ footer {
     margin: 16px 0;
     padding: 8px;
     border-radius: 8px;
-    background: var(--opacity_0_2);
+    background: var(--colorSecondary);
 }
 
 /* Error */
 .error {
     color: var(--colorError);
     padding: 8px 0;
+    font-weight: bold;
+
+}
+
+/* Success */
+.success {
+    color: var(--colorSuccess);
+    padding: 8px 0;
+    font-weight: bold;
 }
 
 /* Divider */
@@ -353,3 +384,116 @@ footer {
     font-weight: normal;
     color: var(--colorOnSecondary);
 }
+
+/* Modals */
+.modal {
+    z-index: 1000;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    display: none;
+    background: var(--opacity_0_2);
+    backdrop-filter: blur(10px);
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 600px;
+    background-color: var(--colorPrimary);
+    padding: 20px;
+    border-radius: 16px;
+    animation: slideUp 0.3s ease-out;
+    margin: 8px;
+}
+
+.modal-content button {
+    border: none;
+    background: var(--colorAccent);
+    padding: 8px 16px;
+    color: var(--colorOnAccent);
+    border-radius: 8px;
+}
+
+.modal-content .row_24 button.yes {
+    background: var(--colorError);
+}
+
+#modalMenu .modal-content a:last-child {
+    color: var(--colorError);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* Skeleton */
+.skeleton {
+    background: linear-gradient(120deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+
+.post-skeleton .row-8 .column-2 {
+    flex: 1;
+}
+
+.post-skeleton .column-8 .bar {
+    width: 70%;
+}
+
+.post-skeleton .column-8 .row-8 .bar {
+    width: 15%;
+}
+
+.post-skeleton .column-8 .row-8:last-child {
+    justify-content: end;
+}
+
+.bar {
+    width: 100%;
+    height: 16px;
+    border-radius: 8px;
+}
+
+.box {
+    width: 100%;
+    height: 120px;
+    border-radius: 8px;
+}
+
+.post-skeleton .column-2 .bar:first-child {
+    width: 50%;
+}
+
+.post-skeleton .column-2 .bar:last-child {
+    width: 20%;
+}
+
+
+/* Loader */

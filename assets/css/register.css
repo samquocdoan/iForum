@@ -1,6 +1,8 @@
 .container {
     max-width: 480px;
+    padding-bottom: 16px;
 }
+
 .top {
     display: flex;
     flex-direction: column;
@@ -12,7 +14,7 @@
 
 button.action {
     border: none;
-    background: var(--colorOpacity01);
+    background: var(--colorSecondary);
     border-radius: 8px;
     display: flex;
     flex-direction: row;
@@ -42,7 +44,7 @@ button.action {
 }
 
 .register-origin input:focus {
-    box-shadow: 0 0 0 4px var(--colorOpacity03);
+    box-shadow: 0 0 0 4px var(--opacity_0_2);
 }
 
 

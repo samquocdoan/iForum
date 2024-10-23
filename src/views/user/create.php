@@ -23,9 +23,10 @@
                 <h2>Tham gia vào iForum</h2>
             </div>
             <form class="register-origin column-8" method="POST">
+                <input class="name-input" type="text" placeholder="Tên của bạn" required>
                 <input class="email-input" type="email" placeholder="Địa chỉ email của bạn" required>
                 <input class="password-input" type="password" placeholder="Mật khẩu" required>
-                <input class="password-input-confirm" type="password" placeholder="Nhập lại mật khẩu" required>
+                <input class="password-confirm-input" type="password" placeholder="Nhập lại mật khẩu" required>
                 <button type="submit" class="action title-medium">Đăng ký</button>
             </form>
             <div class="divider">
@@ -44,6 +45,9 @@
             </div>
         </div>
     </main>
+    <script src="assets/js/js.js"></script>
+    <script src="assets/js/create-account.js"></script>
+
 </body>
 
 </html>
