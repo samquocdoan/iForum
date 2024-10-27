@@ -20,7 +20,7 @@
                         <img class="author-image icon40" src="assets/images/account.svg" alt="Author avatar">
                         <div class="column-zero">
                             <p class="author-name title-large"><?php echo htmlspecialchars($post['name']); ?></p>
-                            <p class="posted-at body-small"><?php echo htmlspecialchars($post['created_at']); ?></p>
+                            <p class="posted-at body-small"><?php echo htmlspecialchars($post['created']); ?></p>
                         </div>
                     </div>
                     <div class="row-16">
@@ -39,10 +39,6 @@
                     <div class="row-8">
                         <img class="icon24" src="assets/images/comment.svg" alt="Comment">
                         <p class="title-medium"><?php echo htmlspecialchars($post['comment_count']) ?></p>
-                    </div>
-                    <div class="row-8">
-                        <img class="icon24" src="assets/images/eye.svg" alt="View">
-                        <p class="title-medium"><?php echo htmlspecialchars($post['view_count']) ?></p>
                     </div>
                 </div>
             </div>

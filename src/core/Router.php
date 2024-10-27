@@ -75,6 +75,6 @@ class Router
         }
 
         http_response_code(404);
-        require __DIR__ . '/../views/404.php';
+        require __DIR__ . '/../views/errors/404.php';
     }
 }

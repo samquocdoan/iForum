@@ -7,11 +7,11 @@ async function asyncFetch(url, options = {}) {
 
     const fetchOptions = {
         method: options.method || 'GET',
-        Headers: {
+        headers: {
             'Content-Type': 'application/json',
             ...options.headers
         },
-        body: options.method === 'POST' || options.method === 'PUT' ? JSON.stringify(options.body) : null,
+        body: (options.method === 'POST' || options.method === 'PUT') ? JSON.stringify(options.body) : null,
         signal
     }
 
@@ -19,17 +19,30 @@ async function asyncFetch(url, options = {}) {
 
     try {
         const response = await fetch(url, fetchOptions);
-        const result = await response.json();
+
         clearTimeout(timeoutId);
 
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const result = await response.json();
         return result;
 
-    } catch(e) {
-        throw e;
+    } catch (error) {
+        if (error.name === 'AbortError') {
+            throw new Error('Request timed out');
+        }
+        throw error;
     }
 }
 
+
 function showModelMenu(isShow = false, titles = [], actions = []) {
+    if (document.getElementById('modalMenu')) {
+        document.getElementById('modalMenu').remove();
+    }
+
     if (!isShow) {
         document.getElementById('modalMenu').remove();
         return;
@@ -38,7 +51,7 @@ function showModelMenu(isShow = false, titles = [], actions = []) {
     const modalString = `<div id="modalMenu" class="modal">
         <div class="modal-content column-16"></div>
     </div>`;
-    
+
     document.querySelector('body').insertAdjacentHTML('beforeend', modalString);
     const myModal = document.getElementById('modalMenu');
     const myModalContent = myModal.querySelector('.modal-content');
@@ -181,3 +194,35 @@ function showNotFound(isShow = false, title, image, titleButton, action = {}) {
         action();
     });
 }
+
+function isElementExists(container, target) {
+    const targetElement = container.querySelector(target);
+    if (!targetElement) return false;
+    return true;
+} 
+
+function removeElement(container, target) {
+    const targetElement = container.querySelector(target);
+    if (!targetElement) return;
+    targetElement.remove();
+}
+
+function removeAllElement(container, target) {
+    const targetElement = container.querySelectorAll(target);
+    if (!targetElement) return;
+    targetElement.forEach(element => {
+        element.remove();
+    });
+}
+
+
+const menuBtn = document.querySelector('.btn-menu');
+const accountBtn = document.querySelector('.btn-account');
+
+menuBtn.addEventListener('click', function () {
+    showModelMenu(true, ["Tạo bài viết", "Bài viết theo thẻ", "Về chúng tôi"], [{}, {}, {}]);
+});
+
+accountBtn.addEventListener('click', function() {
+    showModelMenu(true, ["Tạo bài viết", "Bài viết theo thẻ", "Về chúng tôi"], [{}, {}, {}]);
+});

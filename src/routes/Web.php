@@ -5,8 +5,6 @@ namespace App\Routes;
 use App\Core\Router;
 use Config\Database;
 
-// require_once __DIR__ . '/../../vendor/autoload.php';
-
 $initDb = new Database();
 
 $db = $initDb->getConnection();
@@ -14,16 +12,16 @@ $db = $initDb->getConnection();
 $router = new Router($db);
 
 // Home
-$router->get('/', 'HomeController@index');
+$router->get('/', 'PostController@getPosts');
+$router->get('/newest', 'PostController@getPosts');
+$router->get('/oldest', 'PostController@getPosts');
+$router->get('/popularity', 'PostController@getPosts');
+
+
+$router->get('/posts/{postId}', 'PostController@getPostById');
 
 // Profile
 $router->get('/user/profile', 'UserController@profile');
-
-// Get all post
-$router->get('/posts', 'PostController@getAll');
-
-// Get post by id
-$router->get('/post/{postId}', 'PostController@getPostById');
 
 // create account
 $router->get('/user/create', 'UserController@create');
@@ -43,5 +41,8 @@ $router->get('/user/update-password', 'UserController@updatePassword');
 
 // Test Send mail
 $router->put('/user/create', 'UserController@create');
+
+$router->get('/{sort}/{page}', 'PostController@getPosts');
+$router->get('/{sort}/{time_frame}/{page}', 'PostController@getPosts');
 
 $router->handleRequest($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
