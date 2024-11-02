@@ -18,40 +18,36 @@
     <?php include_once __DIR__ . '/../layouts/header.php'; ?>
     <main>
         <div class="container">
-            <div class="sort-container row-space-between">
-                <div class="sort-origin row-16">
-                    <a href="/newest/1" class="sort action <?php if ($sort === 'newest'): ?> active <?php endif ?>" data-sort="newest">Mới nhất</a>
-                    <a href="/oldest/1" class="sort action <?php if ($sort === 'oldest'): ?> active <?php endif ?>" data-sort="oldest">Cũ nhất</a>
-                    <a href="/popularity/week/1" class="sort action <?php if ($sort === 'popularity'): ?> active <?php endif ?>" data-sort="popularity">Nổi bật</a>
-                </div>
-                <?php if ($sort === 'popularity') {
-                    require __DIR__ . '/../layouts/time_frame.php';
-                }
-                ?>
-            </div>
+            <?php require_once __DIR__ . '/../layouts/SortContainer.php'; ?>
             <div class="post-list column-8">
-                <?php foreach ($posts as $post) {
-                    require __DIR__ . '/../layouts/post.php';
+                <?php if (empty($posts)) {
+                    require __DIR__ . '/../layouts/EndMessage.php';
+                } else {
+                    foreach ($posts as $post) {
+                        require __DIR__ . '/../layouts/post.php';
+                    }
                 } ?>
             </div>
-            <div class="pagination">
-                <?php if ($page > 1): ?>
-                    <?php if ($sort === 'popularity'): ?>
-                        <a class="icon24" href="/<?= $sort ?>/<?= $time_frame ?>/<?= $page - 1 ?>"><img src="assets/images/arrow-left.svg" alt="Previous page"></a>
-                    <?php else: ?>
-                        <a class="icon24" href="/<?= $sort ?>/<?= $page - 1 ?>"><img src="assets/images/arrow-left.svg" alt="Previous page"></a>
+            <?php if ($isShowPagination): ?>
+                <div class="pagination">
+                    <?php if ($page > 1): ?>
+                        <?php if ($sort === 'popularity'): ?>
+                            <a class="icon24" href="/<?= $sort ?>/<?= $timeFrame ?>/<?= $page - 1 ?>"><img src="assets/images/arrow-left.svg" alt="Previous page"></a>
+                        <?php else: ?>
+                            <a class="icon24" href="/<?= $sort ?>/<?= $page - 1 ?>"><img src="assets/images/arrow-left.svg" alt="Previous page"></a>
+                        <?php endif; ?>
                     <?php endif; ?>
-                <?php endif; ?>
 
-                <span><?= $page ?></span>
-                <?php if ($hasNextPage): ?>
-                    <?php if ($sort === 'popularity'): ?>
-                        <a class="icon24" href="/<?= $sort ?>/<?= $time_frame ?>/<?= $page + 1 ?>"><img src="assets/images/arrow-right.svg" alt="Next page"></a>
-                    <?php else: ?>
-                        <a class="icon24" href="/<?= $sort ?>/<?= $page + 1 ?>"><img src="assets/images/arrow-right.svg" alt="Next page"></a>
+                    <span><?= $page ?></span>
+                    <?php if ($hasNextPage): ?>
+                        <?php if ($sort === 'popularity'): ?>
+                            <a class="icon24" href="/<?= $sort ?>/<?= $timeFrame ?>/<?= $page + 1 ?>"><img src="assets/images/arrow-right.svg" alt="Next page"></a>
+                        <?php else: ?>
+                            <a class="icon24" href="/<?= $sort ?>/<?= $page + 1 ?>"><img src="assets/images/arrow-right.svg" alt="Next page"></a>
+                        <?php endif; ?>
                     <?php endif; ?>
-                <?php endif; ?>
-            </div>
+                </div>
+            <?php endif; ?>
         </div>
     </main>
     <?php include_once __DIR__ . '/../layouts/footer.php'; ?>

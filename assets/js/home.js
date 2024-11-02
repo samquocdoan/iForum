@@ -1,4 +1,5 @@
 "use strict";
+
 const sortStr = `<div class="time-frame row-16">
     <button class="sort action active" data-sort="week">Tuần</button>
     <button class="sort action" data-sort="month">Tháng</button>
@@ -6,22 +7,7 @@ const sortStr = `<div class="time-frame row-16">
     <button class="sort action" data-sort="infinite">Tất cả</button>
 </div>`;
 
-const postSkeleton = `<div class="post post-skeleton">
-    <div class="row-8">
-        <div class="icon40 circle-shape skeleton"></div>
-        <div class="column-2">
-            <div class="bar skeleton"></div>
-            <div class="bar skeleton"></div>
-        </div>
-    </div>
-    <div class="column-8">
-        <div class="box skeleton"></div>
-        <div class="row-8">
-            <div class="bar skeleton"></div>
-            <div class="bar skeleton"></div>
-        </div>
-    </div>
-</div>`.repeat(3);
+const loader = `<div class="loader"></div>`;
 
 let page = 0;
 let isLoading = false;
@@ -83,31 +69,17 @@ sortContainer.querySelectorAll('.sort-origin .sort').forEach(s => {
 });
 
 async function loadPosts({ sort = 'newest', page = 0, time_frame = 'week' }) {
-    if (page === 0 && !isElementExists(postList, '.post.post-skeleton')) {
-        postList.innerHTML = postSkeleton;
-    } else {
-        postList.insertAdjacentHTML('beforeend', postSkeleton);
-    }
-
     try {
-        const result = await asyncFetch(`/posts/${sort}/${page}/${limit}/${time_frame}`);
-        const data = result.data;
-        const countPost = data.length;
+        handleLoaderDisplay(page);
 
-        renderPost(data);
+        const fetchData = new FetchData(`/${sort}/${time_frame}/${page}`);
+        const result = await fetchData.get();
 
-        if (countPost < limit) {
-            isHasMorePost = false;
-        } else {
-            isHasMorePost = true;
+        if (result.status !== 'success') {
+            return displayError(result.message);
         }
 
-        const posts = document.querySelectorAll('.post');
-        if (isHasMorePost && posts.length > 2) {
-            const secondLastPost = posts[posts.length - 2];
-            observer.observe(secondLastPost);
-        }
-        isLoading = false;
+        processPostData(result.data, result.count);
 
     } catch (e) {
         isLoading = false;
@@ -115,34 +87,72 @@ async function loadPosts({ sort = 'newest', page = 0, time_frame = 'week' }) {
     }
 }
 
-function renderPost(data) {
-    let postStr = '';
+function handleLoaderDisplay(page) {
+    const loader = new Loader(postList);
 
-    data.forEach(post => {
-        postStr += `<article class="post">
-            <div class="post-author row-8">
-                <img class="author-image icon40" src="assets/images/${post.avatar}.jpg" alt="Author avatar">
-                <div class="column-zero">
-                    <p class="author-name title-large">${post.name}</p>
-                    <p class="posted-at body-extra-small">${post.created}</p>
-                </div>
+    if (page === 0 && !loader.isExists()) {
+        loader.display();
+    } else {
+        loader.insert();
+    }
+}
+
+function processPostData(data, count) {
+    postList.classList.remove('column-center');
+    data.forEach(post => renderPost(post));
+
+    isHasMorePost = count >= limit;
+    observePostList();
+
+    isLoading = false;
+}
+
+function observePostList() {
+    const posts = document.querySelectorAll('.post');
+    if (isHasMorePost && posts.length > 2) {
+        const secondLastPost = posts[posts.length - 2];
+        observer.observe(secondLastPost);
+    }
+}
+
+function renderPost(post) {
+    const avatar = post.avatar ? `assets/images/${post.avatar}` : 'assets/images/account.svg';
+    const formattedDate = timeSince(post.created);
+
+    const postStr = `<article class="post">
+        <div class="post-author row-8">
+            <img class="author-image icon40" src="${avatar}" alt="Author avatar">
+            <div class="column-zero">
+                <p class="author-name title-large">${post.name || 'Ẩn danh'}</p>
+                <p class="posted-at body-extra-small">${formattedDate}</p>
             </div>
-            <a class="post-title word-action" href="/posts/${post.id}"><h1 class="title-extra-large">${post.title}</h1></a>
-            <div class="post-interacts row-16">
-                <div class="row-8" title="Lượt thích">
-                    <img class="icon24" src="../../assets/images/thumbUp.svg" alt="Like">
-                    <p class="title-medium">${post.like_count}</p>
-                </div>
-                <div class="row-8" title="Bình luận">
-                    <img class="icon24" src="../../assets/images/comment.svg" alt="Comment">
-                    <p class="title-medium">${post.comment_count}</p>
-                </div>
+        </div>
+        <a class="post-title word-action" href="/posts/${post.id}">
+            <h1 class="title-extra-large">${post.title}</h1>
+        </a>
+        <div class="post-interacts row-16">
+            <div class="row-8" title="Lượt thích">
+                <img class="icon24" src="../../assets/images/thumbUp.svg" alt="Like">
+                <p class="title-medium">${post.like_count}</p>
             </div>
-        </article>`;
-    });
-    removeAllElement(postList, '.post.post-skeleton');
+            <div class="row-8" title="Bình luận">
+                <img class="icon24" src="../../assets/images/comment.svg" alt="Comment">
+                <p class="title-medium">${post.comment_count}</p>
+            </div>
+        </div>
+    </article>`;
+
+    removeAllElement(postList, '.loader');
     postList.insertAdjacentHTML('beforeend', postStr);
 }
+
+function displayError(message) {
+    removeAllElement(postList, '.loader');
+    postList.classList.add('column-center');
+    const modal = new Modal();
+    modal.showEndMessage(true, message, 'face_01', postList);
+}
+
 
 document.addEventListener('DOMContentLoaded', async function () {
     await loadPosts({ page: page, limit: limit, sort: sort, time_frame: time_frame });

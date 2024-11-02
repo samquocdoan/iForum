@@ -68,11 +68,11 @@ class UserController extends Controller
                 }
 
                 $this->user->name = $user['name'];
-                $this->user->uid = $user['uid'];
+                $this->user->id = $user['id'];
 
                 // Save session
                 SessionManager::start(); # one week
-                SessionManager::set('uid', $this->user->uid);
+                SessionManager::set('id', $this->user->id);
                 SessionManager::set('name', $this->user->name);
                 SessionManager::set('role', $this->user->role);
                 Response::success(message: 'Đăng nhập thành công.', code: 200, data: ['name' => $this->user->name]);
@@ -147,14 +147,14 @@ class UserController extends Controller
     {
         switch ($_SERVER['REQUEST_METHOD']) {
             case 'DELETE':
-                $this->user->uid = SessionManager::get('uid');
+                $this->user->id = SessionManager::get('id');
                 $this->user->email = InputManager::inputJson("email");
                 $this->user->password = InputManager::inputJson("password");
 
                 $userStmt = $this->user->getById();
                 $userResult = $userStmt->fetch(PDO::FETCH_ASSOC);
 
-                if ($userResult['uid'] !== $this->user->uid) {
+                if ($userResult['id'] !== $this->user->id) {
                     Response::error(message: "Có gì đó không ổn! Bạn chưa thể xóa tài khoản bây giờ.", code: 400);
                     return;
                 }
@@ -187,7 +187,7 @@ class UserController extends Controller
 
     public function update()
     {
-        $this->user->uid = 22; // Demo
+        $this->user->id = 22; // Demo
         $fields = ['name', 'birthday', 'gender', 'address', 'email', 'status', 'role', 'avatar_path'];
 
         foreach ($fields as $field) {
@@ -221,7 +221,7 @@ class UserController extends Controller
                 $this->render('user/updatePassword');
                 break;
             case 'POST':
-                $this->user->uid = 28;
+                $this->user->id = 28;
                 $oldPassword = InputManager::inputJson('oldPassword');
                 $newPassword = InputManager::inputJson('newPassword');
                 $newPasswordConfirm = InputManager::inputJson('newPasswordConfirm');
@@ -238,7 +238,7 @@ class UserController extends Controller
                     return;
                 }
 
-                if (intval($user['uid']) !== intval($this->user->uid)) {
+                if (intval($user['id']) !== intval($this->user->id)) {
                     Response::error(message: "Có gì đó không đúng. Bạn chưa thể đổi mật khẩu bây giờ.", code: 401);
                     return;
                 }

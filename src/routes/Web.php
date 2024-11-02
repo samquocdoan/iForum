@@ -16,7 +16,7 @@ $router->get('/', 'PostController@getPosts');
 $router->get('/newest', 'PostController@getPosts');
 $router->get('/oldest', 'PostController@getPosts');
 $router->get('/popularity', 'PostController@getPosts');
-
+$router->get('/tags', 'TagController@index');
 
 $router->get('/posts/{postId}', 'PostController@getPostById');
 
@@ -41,8 +41,11 @@ $router->get('/user/update-password', 'UserController@updatePassword');
 
 // Test Send mail
 $router->put('/user/create', 'UserController@create');
-
+$router->get('/tags/{tagName}', 'TagController@index');
 $router->get('/{sort}/{page}', 'PostController@getPosts');
-$router->get('/{sort}/{time_frame}/{page}', 'PostController@getPosts');
+$router->get('/{sort}/{timeFrame}/{page}', 'PostController@getPosts');
+
+$router->get('/tags/{tagName}/{sort}/{page}', 'TagController@index');
+$router->get('/tags/{tagName}/{sort}/{timeFrame}/{page}', 'TagController@index');
 
 $router->handleRequest($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);

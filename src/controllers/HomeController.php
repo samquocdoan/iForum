@@ -15,8 +15,6 @@ class HomeController extends Controller
     }
 
     public function index() {
-        $stmt = $this->post->getAll();
-        $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $this->render('home/index', ['posts' => $posts]);
+        $this->render('posts/tag');
     }
 }

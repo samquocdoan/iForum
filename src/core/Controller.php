@@ -19,4 +19,27 @@ class Controller
             require_once __DIR__ . '/../views/errors/404.php';
         }
     }
+
+    public function timeAgo($datetime) {
+        $time = strtotime($datetime);
+        $diff = time() - $time;
+    
+        $units = [
+            31536000 => 'năm',
+            2592000 => 'tháng',
+            604800 => 'tuần',
+            86400 => 'ngày',
+            3600 => 'giờ',
+            60 => 'phút',
+            1 => 'giây'
+        ];
+    
+        foreach ($units as $unit => $text) {
+            if ($diff < $unit) continue;
+            $numberOfUnits = floor($diff / $unit);
+            return "$numberOfUnits $text trước";
+        }
+    
+        return "vừa xong";
+    }    
 }

@@ -25,7 +25,7 @@ class Database
     public function getConnection()
     {
         try {
-            $dsn = "mysql:host=" . $this->host . ";dbname=" . $this->dbname . ";charset=utf8";
+            $dsn = "mysql:host={$this->host};dbname={$this->dbname};charset=utf8";
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, # Thiet lap che do loi
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, # Thiet lap kieu lay du lieu
@@ -36,27 +36,5 @@ class Database
         } catch (PDOException $e) {
             die("Ket Noi That Bai: " . $e->getMessage());
         }
-    }
-
-    public function query($sql, $params = [])
-    {
-        $stmt = $this->getConnection()->prepare($sql);
-        $stmt->execute($params);
-        return $stmt;
-    }
-
-    public function fetchAll($sql, $params = []) {
-        $stmt = $this->query($sql, $params);
-        return $stmt->fetchAll();
-    }
-
-    public function fetch($sql, $params = []) {
-        $stmt = $this->query($sql, $params);
-        return $stmt->fetch();
-    }
-
-    public function execute($sql, $params = []) {
-        $stmt = $this->query($sql, $params);
-        return $stmt->rowCount();
     }
 }

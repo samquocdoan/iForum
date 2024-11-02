@@ -178,6 +178,13 @@ a {
 }
 
 /* Column */
+.column-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center !important;
+    align-items: center;
+}
+
 .column-zero {
     display: flex;
     flex-direction: column;
@@ -219,6 +226,19 @@ a {
     gap: 24px;
 }
 
+/* Padding */
+.pad-vertical-8 {
+    padding: 8px 0;
+}
+
+.pad-top-8 {
+    padding-top: 8px;
+}
+
+.pad-top-24 {
+    padding-top: 24px;
+}
+
 /* Shapes */
 .circle-shape {
     border-radius: 50%;
@@ -240,7 +260,7 @@ main {
 }
 
 main .container {
-    flex-grow: 1; 
+    flex-grow: 1;
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -493,7 +513,6 @@ footer {
     }
 }
 
-
 .post-skeleton .row-8 .column-2 {
     flex: 1;
 }
@@ -530,6 +549,70 @@ footer {
     width: 20%;
 }
 
+/* Loader */
+.loader {
+    width: 65px;
+    aspect-ratio: 1;
+    position: relative;
+}
+
+.loader:before,
+.loader:after {
+    content: "";
+    position: absolute;
+    border-radius: 50px;
+    border: none;
+    box-shadow: 0 0 0 3px inset var(--colorOnPrimary);
+    animation: l4 2.5s infinite;
+}
+
+.loader:after {
+    animation-delay: -1.25s;
+}
+
+@keyframes l4 {
+    0% {
+        inset: 0 35px 35px 0;
+    }
+
+    12.5% {
+        inset: 0 35px 0 0;
+    }
+
+    25% {
+        inset: 35px 35px 0 0;
+    }
+
+    37.5% {
+        inset: 35px 0 0 0;
+    }
+
+    50% {
+        inset: 35px 0 0 35px;
+    }
+
+    62.5% {
+        inset: 0 0 0 35px;
+    }
+
+    75% {
+        inset: 0 0 35px 35px;
+    }
+
+    87.5% {
+        inset: 0 0 35px 0;
+    }
+
+    100% {
+        inset: 0 35px 35px 0;
+    }
+}
+
+.end-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 /* Pagination */
 .pagination {
@@ -546,6 +629,48 @@ footer {
 .pagination span {
     padding: 4px 24px;
     font-weight: bold;
+}
+
+.disabled {
+    pointer-events: none;
+    animation: opacity 1s infinite;
+}
+
+@keyframes opacity {
+    0% {
+        opacity: 0.2;
+    }
+    25% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 0.6;
+    }
+    75% {
+        opacity: 0.4;
+    }
+    100% {
+        opacity: 0.2;
+    }
+}
+
+/* Tag */
+.tag-container {
+    flex-wrap: wrap;
+}
+.main-tag {
+    border-radius: 8px;
+}
+
+.tag {
+    color: var(--colorAccent);
+    padding: 8px;
+    border: 1.5px solid var(--colorSecondary);
+    border-radius: 8px;
+}
+
+.tag-item {
+    flex-wrap: wrap;
 }
 
 /* Responsive */

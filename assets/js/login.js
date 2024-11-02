@@ -1,6 +1,5 @@
 "use strict";
 
-
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
     const txtEmail = form.querySelector('.email-input');
@@ -13,18 +12,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const password = txtPassword.value;
 
         try {
-            const response = await fetch('/user/login', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    email: email,
-                    password: password
-                })
+            const fetchData = new FetchData('/user/login', { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: { email: email, password: password }
             });
-
-            const result = await response.json();
+            const result = await fetchData.post();
+            
             let message = null;
 
             if (result.status === 'success') {
@@ -32,12 +26,11 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 message = `<p class="message error title-small">${result.message}</p>`;
             }
-            
+
             if (message !== null) {
-                if (form.querySelector('p.message')) form.querySelector('p.message').remove();
+                if (isElementExists(form, 'p.message')) removeElement(form, 'p.message');
                 txtPassword.insertAdjacentHTML('afterend', message);
             }
-
 
         } catch (error) {
             console.error("Lỗi xảy ra:", error);

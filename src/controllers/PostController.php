@@ -4,12 +4,13 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Models\Post;
+use App\Models\Tag;
 use PDO;
 
 class PostController extends Controller
 {
-    public $db;
-    public $post;
+    private $db;
+    private $post;
 
     public function __construct($db)
     {
@@ -17,18 +18,16 @@ class PostController extends Controller
         $this->post = new Post($db);
     }
 
-    public function getPosts($sort = 'newest', $time_frame = null, $page = 1)
+    public function getPosts($sort = 'newest', $timeFrame = null, $page = 1)
     {
-        $limit = 10;
-        $this->post->page = max(1, intval($page));
-        $this->post->limit = $limit + 1;
-        $this->post->offset = $limit * ($this->post->page - 1);
+        $limit = 12;
+        $this->post->setPagination(page: $page, limit: $limit);
 
         $stmt = null;
         $popularityMethods = [
-            'week' => 'week',
-            'month' => 'month',
-            'year' => 'year',
+            'week' => 'sortWeek',
+            'month' => 'sortMonth',
+            'year' => 'sortYear',
             'infinite' => 'sortPopularity'
         ];
 
@@ -40,8 +39,8 @@ class PostController extends Controller
                 $stmt = $this->post->sortOldest();
                 break;
             case "popularity":
-                if (isset($popularityMethods[$time_frame])) {
-                    $stmt = $this->post->{$popularityMethods[$time_frame]}();
+                if (isset($popularityMethods[$timeFrame])) {
+                    $stmt = $this->post->{$popularityMethods[$timeFrame]}();
                 } else {
                     return $this->render('errors/404');
                 }
@@ -50,28 +49,45 @@ class PostController extends Controller
                 return $this->render('errors/404');
         }
 
-        if ($stmt) {
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            $hasNextPage = count($result) > $limit;
-
-            if ($hasNextPage) {
-                array_pop($result);
-            }
-
-            if (!empty($result)) {
-                return $this->render('home/index', [
-                    'posts' => $result,
-                    'page' => $this->post->page,
-                    'sort' => $sort,
-                    'time_frame' => $time_frame,
-                    'hasNextPage' => $hasNextPage
-                ]);
-            }
-            echo "Chưa có bài viết nào!";
-        } else {
-            $this->render('errors/404');
+        if (!$stmt) {
+            return ['message' => 'Không có dữ liệu bài viết.'];
         }
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $hasPost = count($result);
+        $hasNextPage = $hasPost > $limit;
+
+        if ($hasNextPage) {
+            array_pop($result);
+        }
+
+        $params = [
+            'page' => $this->post->page,
+            'sort' => $sort,
+            'timeFrame' => $timeFrame,
+            'hasNextPage' => $hasNextPage,
+        ];
+
+        if ($hasPost) {
+            $params['posts'] = $result;
+
+            foreach ($params['posts'] as &$post) {
+                if (isset($post['tags'])) {
+                    $post['tags'] = explode(',', $post['tags']);
+                }
+                if (isset($post['created'])) {
+                    $post['created'] = $this->timeAgo($post['created']);
+                }
+            }
+
+            $params['postCount'] = $hasPost;
+            $params['isShowPagination'] = true;
+        } else {
+            $params['isShowPagination'] = false;
+            $params['message'] = 'Chưa có bài viết nào.';
+        }
+
+        return $this->render('home/index', $params);
     }
 
 
@@ -93,4 +109,6 @@ class PostController extends Controller
                 break;
         }
     }
+
+    public function getPostByTagName($tagName) {}
 }

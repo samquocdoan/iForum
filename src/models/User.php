@@ -10,7 +10,7 @@ class User
     private $db;
     private $tableName = 'users';
 
-    public $uid;
+    public $id;
     public $name;
     public $birthday;
     public $gender;
@@ -18,10 +18,8 @@ class User
     public $email;
     public $password;
     public $role;
-    public $status;
-    public $avatar_path;
-    public $cover_path;
-    public $createdAt;
+    public $avatar;
+    public $created;
 
     public function __construct($db)
     {
@@ -30,16 +28,16 @@ class User
 
     public function getById()
     {
-        $query = "SELECT * FROM {$this->tableName} WHERE uid=:uid";
+        $query = "SELECT * FROM {$this->tableName} WHERE id=:id";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':uid', $this->uid);
+        $stmt->bindParam(':id', $this->id);
         $stmt->execute();
         return $stmt;
     }
 
     public function login()
     {
-        $query = "SELECT uid, name, email, password, role, status
+        $query = "SELECT id, name, email, password, role
         FROM {$this->tableName} WHERE email=:email";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':email', $this->email);
@@ -67,7 +65,7 @@ class User
     {
         $query = "SELECT password FROM {$this->tableName} WHERE id=:id AND email =:email";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':id', $this->uid);
+        $stmt->bindParam(':id', $this->id);
         $stmt->bindParam(':email', $this->email);
         $stmt->execute();
         return $stmt;
@@ -104,24 +102,19 @@ class User
             $params[':email'] = $this->email;
         }
 
-        if ($this->status !== null) {
-            $setClauses[] = 'status=:status';
-            $params[':status'] = $this->status;
-        }
-
         if ($this->role !== null) {
             $setClauses[] = 'role=:role';
             $params[':role'] = $this->role;
         }
 
-        if ($this->avatar_path !== null) {
-            $setClauses[] = 'avatar_path=:avatar_path';
-            $params[':avatar_path'] = $this->avatar_path;
+        if ($this->avatar !== null) {
+            $setClauses[] = 'avatar=:avatar';
+            $params[':avatar'] = $this->avatar;
         }
 
         $query .= ' ' . implode(',', $setClauses);
-        $query .= ' WHERE uid = :uid';
-        $params[':uid'] = $this->uid;
+        $query .= ' WHERE id = :id';
+        $params[':id'] = $this->id;
 
         $stmt = $this->db->prepare($query);
         $stmt->execute($params);
@@ -138,10 +131,10 @@ class User
 
     public function updatePassword()
     {
-        $query = "UPDATE users SET password = :password WHERE uid = :uid";
+        $query = "UPDATE users SET password = :password WHERE id = :id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':password', $this->password);
-        $stmt->bindParam(':uid', $this->uid);
+        $stmt->bindParam(':id', $this->id);
         return $stmt->execute();
     }
 }
