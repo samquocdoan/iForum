@@ -1,18 +1,22 @@
-<div class="tag-container column-8">
-    <?php if ($selected): ?>
-        <div class="main-tag">
-            <div class="row-space-between">
-                <h1><?php echo $tagData['name'] ?></h1>
-                <h3><?php echo $tagData['post_count'] ?> bài viết</h3>
+<div class="tag-container column-16">
+    <?php if (isset($currentTagData) || !empty($currentTagData)): ?>
+        <div class="main-tag row-8">
+            <img class="icon120" src="assets/images/tag.svg" alt="Tag">
+            <div class="column-8">
+                <h1><?= ($currentTagData['name']) ?></h1>
+                <h3><?= $currentTagData['post_count'] ?> bài viết</h3>
+                <h5>Xuất hiện từ <?= $currentTagData['created'] ?></h5>
             </div>
-            <h5>Bài viết đầu tiên vào <?php echo $tagData['created'] ?></h5>
         </div>
     <?php endif ?>
-    <div class="column-8 pad-top-24">
-        <p class="title-medium">Có thể sẽ hữu ích với bạn</p>
+    <div class="column-8">
+        <div class="row-space-between">
+            <p class="title-medium">Có thể sẽ hữu ích với bạn</p>
+            <a href="/tags/all" class="body-small">Xem tất cả</a>
+        </div>
         <div class="tag-item row-16">
-            <?php foreach ($allTag as $tag): ?>
-                <a href="/tags/<?php echo $tag['name'] ?>" class="tag body-medium">#<?php echo $tag['name'] ?></a>
+            <?php foreach ($popularityTag as $tag): ?>
+                <a href="/tags/<?= $tag['name'] ?>" class="tag body-medium">#<?= $tag['name'] ?></a>
             <?php endforeach ?>
         </div>
     </div>
