@@ -4,18 +4,22 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Models\Post;
-use App\Models\Tag;
+use App\Models\Comment;
+
 use PDO;
 
-class PostController extends Controller
+class PostController
 {
+    use Controller;
     private $db;
     private $post;
+    private $comment;
 
     public function __construct($db)
     {
         $this->db = $db;
         $this->post = new Post($db);
+        $this->comment = new Comment($db);
     }
 
     public function getPosts($sort = 'newest', $timeFrame = null, $page = 1)
@@ -90,25 +94,43 @@ class PostController extends Controller
         return $this->render('home/index', $params);
     }
 
-
-    public function getPostById($postId)
+    public function postDetail($postId)
     {
-        switch ($_SERVER['REQUEST_METHOD']) {
-            case 'GET':
-                $this->post->id = $postId;
-                $stmt = $this->post->getById();
-                $post = $stmt->fetch(PDO::FETCH_ASSOC);
-                if (!empty($post)) {
-                    $this->render('posts/detail', ['post' => $post]);
-                } else {
-                    $this->render('errors/404');
-                }
-                break;
-            default:
-                $this->render('errors/404');
-                break;
-        }
+        $this->post->id = $postId;
+        $this->comment->id = $postId;
+
+        $postDetail = $this->getPostById();
+        $comments = $this->getCommentByPostId();
+
+        $data = [
+            'postData' => $postDetail,
+            'comments' => $comments,
+        ];
+        $this->render('posts/detail', $data);
     }
 
-    public function getPostByTagName($tagName) {}
+    public function getPostById()
+    {
+        $stmt = $this->post->getById();
+        $post = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($post) {
+            $post['tags'] = explode(',', $post['tags']);
+            $post['created'] = $this->timeAgo($post['created']);
+            return $post;
+        }
+        return [];
+    }
+
+    public function getCommentByPostId()
+    {
+        $stmt = $this->comment->sortNewest();
+        $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($comments) {
+            foreach ($comments as &$comment) {
+                $comment['commented'] = $this->timeAgo($comment['commented']);
+            }
+            return $comments;
+        }
+        return [];
+    }
 }
