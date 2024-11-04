@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-class Controller
+trait Controller
 {
     protected function render($view, $data = [])
     {
@@ -20,10 +20,11 @@ class Controller
         }
     }
 
-    public function timeAgo($datetime) {
+    public function timeAgo($datetime)
+    {
         $time = strtotime($datetime);
         $diff = time() - $time;
-    
+
         $units = [
             31536000 => 'năm',
             2592000 => 'tháng',
@@ -33,13 +34,22 @@ class Controller
             60 => 'phút',
             1 => 'giây'
         ];
-    
+
         foreach ($units as $unit => $text) {
             if ($diff < $unit) continue;
             $numberOfUnits = floor($diff / $unit);
             return "$numberOfUnits $text trước";
         }
-    
+
         return "vừa xong";
-    }    
+    }
+
+    public function setPagination($page, $limit)
+    {
+        $page = max(1, (int)$page);
+        $limit = (int)$limit + 1;
+        $offset = $limit * ($page - 1);
+
+        return $offset;
+    }
 }

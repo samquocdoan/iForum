@@ -14,10 +14,13 @@ class Post
     public $content;
     public $author;
     public $tag;
-    public $sort_frame = 'week';
+
     public $page = 0;
-    public $limit = 10;
+    public $limit = POST_LIMIT;
     public $offset;
+
+    public $sort = 'newest';
+    public $timeFrame = 'week';
 
     public function __construct($db)
     {
@@ -31,7 +34,7 @@ class Post
         $this->offset = $limit * ($this->page - 1);
     }
 
-    protected function baseQuery($orderBy, $interval = null, $additionalWhere = "")
+    protected function baseQuery($orderBy, $interval = null)
     {
         $dateCondition = $interval ? " AND p.created >= DATE_SUB(NOW(), INTERVAL $interval)" : "";
 
@@ -46,7 +49,7 @@ class Post
         LEFT JOIN tags ON tags.id = post_tag.tag_id
         LEFT JOIN post_like ON p.id = post_like.post_id
         LEFT JOIN post_comment ON p.id = post_comment.post_id
-        WHERE 1=1 $dateCondition $additionalWhere
+        WHERE 1=1 $dateCondition
         GROUP BY p.id
         ORDER BY $orderBy
         LIMIT :limit OFFSET :offset";

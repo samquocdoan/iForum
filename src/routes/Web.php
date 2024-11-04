@@ -18,7 +18,7 @@ $router->get('/oldest', 'PostController@getPosts');
 $router->get('/popularity', 'PostController@getPosts');
 $router->get('/tags', 'TagController@index');
 
-$router->get('/posts/{postId}', 'PostController@getPostById');
+$router->get('/posts/{postId}', 'PostController@postDetail');
 
 // Profile
 $router->get('/user/profile', 'UserController@profile');

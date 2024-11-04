@@ -19,7 +19,7 @@
     <?php endif ?>
     <div class="post-interacts row-16">
         <div class="row-8" title="Lượt thích">
-            <img class="icon24" src="../../assets/images/thumbUp.svg" alt="Like">
+            <img class="icon24" src="../../assets/images/favorite.svg" alt="Favorite">
             <p class="title-medium"><?php echo htmlspecialchars($post['like_count']) ?></p>
         </div>
         <div class="row-8" title="Bình luận">

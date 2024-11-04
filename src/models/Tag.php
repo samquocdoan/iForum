@@ -15,7 +15,7 @@ class Tag extends Post
         parent::__construct($db);
     }
 
-    public function getTagPopularity()
+    public function getAllTag()
     {
         $query = "SELECT * FROM tags";
         $stmt = $this->db->prepare($query);
@@ -23,11 +23,40 @@ class Tag extends Post
         return $stmt;
     }
 
-    public function getTagByPostId()
+    public function getTagPopularity()
     {
-        $query = "SELECT tags.* FROM post_tag JOIN tags ON tags.id = post_tag.tag_id WHERE post_tag.post_id = :postId";
+        $query = "SELECT tags.*,
+        COUNT(DISTINCT post_tag.post_id) AS post_count
+        FROM tags
+        LEFT JOIN post_tag ON tags.id = post_tag.tag_id
+        GROUP BY tags.id
+        HAVING post_count > 0
+        ORDER BY post_count DESC
+        LIMIT 10";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':postId', $this->id);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    public function postWithTag()
+    {
+        $query = "SELECT p.*, u.avatar, u.name,
+        GROUP_CONCAT(DISTINCT tags.name ORDER BY tags.name ASC) AS tags,
+        COUNT(DISTINCT post_like.id) AS like_count,
+        COUNT(DISTINCT post_comment.id) AS comment_count
+        FROM posts p
+        JOIN users u ON p.author = u.id
+        LEFT JOIN post_tag ON p.id = post_tag.post_id
+        LEFT JOIN tags ON tags.id = post_tag.tag_id
+        LEFT JOIN post_like ON p.id = post_like.post_id
+        LEFT JOIN post_comment ON p.id = post_comment.post_id
+        GROUP BY p.id
+        HAVING tags IS NOT NULL
+        ORDER BY p.created DESC
+        LIMIT :limit";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':limit', $this->limit);
         $stmt->execute();
         return $stmt;
     }
