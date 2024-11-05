@@ -15,6 +15,34 @@
     background: var(--colorSecondary);
 }
 
+.write-comment {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+
+.btn-comment {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    color: var(--colorOnAccent);
+    background: var(--colorAccent);
+    border: none;
+}
+
+.btn-cancel {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    color: var(--colorOnPrimary);
+    background: var(--colorPrimary);
+    border: none;
+}
+
+.btn-comment:disabled, .btn-cancel:disabled {
+    opacity: .5;
+}
+
 /* Comment */
 .comment {
     padding: 16px;
