@@ -15,7 +15,7 @@
     --colorSecondary: #ececec;
     --colorOnSecondary: #333;
     --colorAccent: #5aafff;
-    --colorOnAccent: #1F1F1F;
+    --colorOnAccent: #FFF;
     --colorWarning: #e0aa44;
     --colorOnWarning: #FFF;
     --colorError: #f86d6d;
@@ -676,7 +676,23 @@ footer {
     border-radius: 8px;
 }
 
+/* Custom Quill */
+.ql-toolbar {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
 
+.ql-container {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.ql-toolbar.ql-snow, .ql-container.ql-snow {
+    font-family: inherit;
+    width: 100%;
+    padding: 16px;
+    border: 2px solid var(--colorSecondary);
+}
 
 /* Responsive */
 @media (max-width: 768px) {
