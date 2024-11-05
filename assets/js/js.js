@@ -337,3 +337,32 @@ document.querySelectorAll('.sort.action').forEach(link => {
         body.classList.add('disabled');
     });
 });
+
+function drawConnectorLine(container, parent, target) {
+    container = document.querySelector(container);
+    const parents = document.querySelectorAll(parent);
+    
+    // Remove old connector
+    container.querySelectorAll('.connector-line').forEach(line => line.remove());
+
+    parents.forEach((parent, index) => {
+        if (index < parents.length -1) {
+            const line = document.createElement('div');
+            line.classList.add('connector-line');
+            parent.appendChild(line);
+
+            const currentTarget = parent.querySelector(target);
+            const nextTarget = parents[index + 1].querySelector(target);
+
+            const distance = nextTarget.getBoundingClientRect().top - currentTarget.getBoundingClientRect().bottom;
+            line.style.height = `${distance}px`;
+        }
+    });
+}
+
+drawConnectorLine('.comment-list', '.comment', '.avatar');
+
+window.addEventListener('resize', function() {
+    drawConnectorLine('.comment-list', '.comment', '.avatar');
+    console.log('Rezie');
+});
