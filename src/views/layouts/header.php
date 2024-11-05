@@ -12,7 +12,7 @@ if (isset($_SESSION['uid'])) {
 
 <header>
     <div class="container">
-        <a href="/" title="iForum"><img class="logo action icon40" src="../../assets/images/logo.svg" alt="Logo"></a>
+        <a href="/" title="iForum"><img class="logo action icon40 loading" src="../../assets/images/logo.svg" alt="Logo"></a>
         <nav class="header-action row-8">
             <button class="btn-menu action" title="Menu"><img src="../../assets/images/menu.svg" alt="Menu"></button>
             <a href="/" class="btn-search action" title="Tìm kiếm"><img src="../../assets/images/search.svg" alt="Search"></a>

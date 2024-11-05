@@ -358,9 +358,6 @@ body::-webkit-scrollbar-thumb:hover {
 /* Sort */
 .sort-container {
     font-size: 18px;
-    padding: 8px 16px;
-    border-radius: 8px;
-    border: 1.5px solid var(--colorSecondary);
 }
 
 .sort-container a {
@@ -624,7 +621,7 @@ footer {
     justify-content: center;
     align-items: center;
     max-width: 240px;
-    margin: 24px auto 0px auto;
+    margin: 0 auto 0px auto;
     padding: 8px;
     border-radius: 32px;
 }
@@ -643,21 +640,48 @@ footer {
     0% {
         opacity: 0.2;
     }
+
     25% {
         opacity: 0.4;
     }
+
     50% {
         opacity: 0.6;
     }
+
     75% {
         opacity: 0.4;
     }
+
     100% {
         opacity: 0.2;
     }
 }
 
 /* Tag */
+.main-tag {
+    width: 100%;
+    padding-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.main-tag h1 {
+    font-weight: bolder;
+    font-size: 56px;
+}
+
+.main-tag h5 {
+    color: var(--opacity_0_6);
+}
+
+.main-tag .column-zero {
+    align-items: center;
+}
+
 .tag-container {
     flex-wrap: wrap;
 }
@@ -671,9 +695,6 @@ footer {
 
 .tag-item {
     flex-wrap: wrap;
-    padding: 16px;
-    border: 1.5px var(--colorSecondary) solid;
-    border-radius: 8px;
 }
 
 /* Custom Quill */
@@ -687,11 +708,45 @@ footer {
     border-bottom-right-radius: 8px;
 }
 
-.ql-toolbar.ql-snow, .ql-container.ql-snow {
+.ql-toolbar.ql-snow,
+.ql-container.ql-snow {
     font-family: inherit;
     width: 100%;
     padding: 16px;
     border: 2px solid var(--colorSecondary);
+}
+
+.editor-container {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    padding-bottom: 24px;
+}
+
+.editor-container .row-space-between {
+    margin-top: 8px;
+    width: 100%;
+}
+
+.editor-container .btn-submit {
+    padding: 12px 16px;
+    border-radius: 8px;
+    color: var(--colorOnAccent);
+    background: var(--colorAccent);
+    border: none;
+}
+
+.editor-container .btn-cancel {
+    padding: 12px 16px;
+    border-radius: 8px;
+    color: var(--colorOnPrimary);
+    background: var(--colorPrimary);
+    border: none;
+}
+
+.editor-container .btn-submit:disabled,
+.editor-container .btn-cancel:disabled {
+    opacity: .5;
 }
 
 /* Responsive */
@@ -700,6 +755,14 @@ footer {
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
-        gap: 16px;
+        gap: 8px;
     }
+}
+
+.connector-line {
+    position: absolute;
+    top: 40px;
+    left: 20px;
+    width: 2px;
+    background-color: #ccc;
 }

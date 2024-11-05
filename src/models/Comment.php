@@ -15,7 +15,7 @@ class Comment extends Post
     public $limit = COMMENT_LIMIT;
     public $orderBy = 'cmt.commented DESC';
     public $interval = null;
-    public $offset;
+    public $offset = 0;
 
     public function __construct($db)
     {
@@ -24,7 +24,8 @@ class Comment extends Post
 
     public function pagination()
     {
-        $this->offset = $this->setPagination($this->page, $this->limit);
+        $this->offset = $this->limit * ($this->page - 1);
+        $this->limit += 1; // This line is required below offset.
     }
 
     public function baseCommentQuery()
@@ -57,5 +58,16 @@ class Comment extends Post
     {
         $this->orderBy = "cmt.commented ASC";
         return $this->baseCommentQuery();
+    }
+
+    public function countComments()
+    {
+        $query = "SELECT COUNT(*) as total FROM {$this->table} WHERE post_id = :postId";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':postId', $this->id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'] ?? 0;
     }
 }

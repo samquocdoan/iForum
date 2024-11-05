@@ -49,7 +49,6 @@ trait Controller
         $page = max(1, (int)$page);
         $limit = (int)$limit + 1;
         $offset = $limit * ($page - 1);
-
-        return $offset;
+        return ['page' => $page, 'limit' => $limit, 'offset' => $offset];
     }
 }

@@ -327,7 +327,7 @@ accountBtn?.addEventListener('click', function () {
 
 const body = document.querySelector('body');
 
-document.querySelectorAll('.sort.action').forEach(link => {
+document.querySelectorAll('.loading').forEach(link => {
     link.addEventListener('click', function (event) {
         if (this.classList.contains('disabled')) {
             event.preventDefault();
@@ -360,7 +360,7 @@ function drawConnectorLine(container, parent, target) {
     });
 }
 
-drawConnectorLine('.comment-list', '.comment', '.avatar');
+// drawConnectorLine('.comment-list', '.comment', '.avatar');
 
 window.addEventListener('resize', function() {
     drawConnectorLine('.comment-list', '.comment', '.avatar');

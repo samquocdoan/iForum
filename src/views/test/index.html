@@ -8,13 +8,95 @@
     <link rel="stylesheet" href="assets/css/css.css">
     <title>Document</title>
 </head>
+<style>
+    .comment-container {
+        position: relative;
+    }
+
+    .comment {
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 20px;
+    }
+
+    .avatar {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    
+</style>
 
 <body>
     <main>
         <div class="container">
-            
+            <div class="comment-container">
+                <div class="comment">
+                    <img src="assets/images/gojo.jpg" alt="Avatar" class="avatar">
+                    <div>
+                        <p>Doan</p>
+                        <p>2 ngày trước</p>
+                        <p>Cách này sẽ giúp bạn có đường nối giữa các bình luận cùng cấp trong cùng một cấp độ. Bạn
+                            có thể mở rộng thêm để kết nối các bình luận theo kiểu cây (tree) nếu cần.</p>
+                    </div>
+                </div>
+                <div class="comment">
+                    <img src="assets/images/gojo.jpg" alt="Avatar" class="avatar">
+                    <div>
+                        <p>Doan</p>
+                        <p>2 ngày trước</p>
+                        <p>Cách này sẽ giúp bạn có đường nối giữa các bình luận cùng cấp trong cùng một cấp độ. Bạn
+                            có thể mở rộng thêm để kết nối các bình luận theo kiểu cây (tree) nếu cần.</p>
+                    </div>
+                </div>
+                <div class="comment">
+                    <img src="assets/images/gojo.jpg" alt="Avatar" class="avatar">
+                    <div>
+                        <p>Doan</p>
+                        <p>2 ngày trước</p>
+                        <p>Cách này sẽ giúp bạn có đường nối giữa các bình luận cùng cấp trong cùng một cấp độ. Bạn
+                            có thể mở rộng thêm để kết nối các bình luận theo kiểu cây (tree) nếu cần.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
+
+    <script>
+        // Hàm vẽ đường nối từ avatar hiện tại đến avatar kế tiếp
+        function drawConnectorLines() {
+            const comments = document.querySelectorAll('.comment');
+
+            // Xóa các đường nối cũ nếu có
+            document.querySelectorAll('.connector-line').forEach(line => line.remove());
+
+            comments.forEach((comment, index) => {
+                if (index < comments.length - 1) {
+                    // Tạo đường nối mới
+                    const line = document.createElement('div');
+                    line.classList.add('connector-line');
+                    comment.appendChild(line);
+
+                    // Tính toán chiều cao từ avatar hiện tại đến avatar kế tiếp
+                    const currentAvatar = comment.querySelector('.avatar');
+                    const nextAvatar = comments[index + 1].querySelector('.avatar');
+
+                    const distance = nextAvatar.getBoundingClientRect().top - currentAvatar.getBoundingClientRect().bottom;
+                    line.style.height = `${distance}px`;
+                }
+            });
+        }
+
+        // Vẽ đường nối khi trang tải lần đầu
+        drawConnectorLines();
+
+        // Lắng nghe sự kiện thay đổi kích thước và vẽ lại đường nối
+        window.addEventListener('resize', drawConnectorLines);
+    </script>
 </body>
 
 </html>

@@ -45,6 +45,8 @@ $router->get('/tags/{tagName}', 'TagController@index');
 $router->get('/{sort}/{page}', 'PostController@getPosts');
 $router->get('/{sort}/{timeFrame}/{page}', 'PostController@getPosts');
 
+$router->get('/posts/{postId}/{sort}/{page}', 'PostController@postDetail');
+
 $router->get('/tags/{tagName}/{sort}/{page}', 'TagController@index');
 $router->get('/tags/{tagName}/{sort}/{timeFrame}/{page}', 'TagController@index');
 

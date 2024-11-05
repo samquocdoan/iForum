@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Manage\SessionManager;
 use App\Models\Post;
 use App\Models\Comment;
 
@@ -94,20 +95,34 @@ class PostController
         return $this->render('home/index', $params);
     }
 
-    public function postDetail($postId)
+    public function postDetail($postId, $sort = 'newest', $page = 1)
     {
+        $this->comment->page = $page;
         $this->post->id = $postId;
         $this->comment->id = $postId;
+        $this->comment->pagination();
 
-        $postDetail = $this->getPostById();
-        $comments = $this->getCommentByPostId();
+        SessionManager::set('postId', $postId);
+
+        $comments = $this->getCommentByPostId($sort);
+        $postDetail = $page == 1 ? $this->getPostById() : null;
+        $totalComments = $this->comment->countComments();
+        $hasNextPage = count($comments) > COMMENT_LIMIT;
+
+        if ($hasNextPage) array_pop($comments);
 
         $data = [
             'postData' => $postDetail,
+            'totalComments' => $totalComments,
             'comments' => $comments,
+            'page' => $this->comment->page,
+            'sort' => $sort,
+            'hasNextPage' => $hasNextPage,
         ];
+
         $this->render('posts/detail', $data);
     }
+
 
     public function getPostById()
     {
@@ -121,9 +136,18 @@ class PostController
         return [];
     }
 
-    public function getCommentByPostId()
+    public function getCommentByPostId($sort)
     {
-        $stmt = $this->comment->sortNewest();
+        $stmt = null;
+        switch ($sort) {
+            case 'oldest':
+                $stmt = $this->comment->sortOldest();
+                break;
+            default:
+                $stmt = $this->comment->sortNewest();
+                break;
+        }
+
         $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if ($comments) {
             foreach ($comments as &$comment) {

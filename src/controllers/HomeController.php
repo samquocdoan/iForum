@@ -6,8 +6,9 @@ use App\Core\Controller;
 use App\Models\Post;
 use PDO;
 
-class HomeController extends Controller
+class HomeController
 {
+    use Controller;
     private $post;
 
     public function __construct($db) {

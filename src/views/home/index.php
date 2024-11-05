@@ -32,18 +32,18 @@
                 <div class="pagination">
                     <?php if ($page > 1): ?>
                         <?php if ($sort === 'popularity'): ?>
-                            <a class="icon24" href="/<?= $sort ?>/<?= $timeFrame ?>/<?= $page - 1 ?>"><img src="assets/images/arrow-left.svg" alt="Previous page"></a>
+                            <a class="icon24 loading" href="/<?= $sort ?>/<?= $timeFrame ?>/<?= $page - 1 ?>"><img src="assets/images/arrow-left.svg" alt="Previous page"></a>
                         <?php else: ?>
-                            <a class="icon24" href="/<?= $sort ?>/<?= $page - 1 ?>"><img src="assets/images/arrow-left.svg" alt="Previous page"></a>
+                            <a class="icon24 loading" href="/<?= $sort ?>/<?= $page - 1 ?>"><img src="assets/images/arrow-left.svg" alt="Previous page"></a>
                         <?php endif; ?>
                     <?php endif; ?>
 
                     <span><?= $page ?></span>
                     <?php if ($hasNextPage): ?>
                         <?php if ($sort === 'popularity'): ?>
-                            <a class="icon24" href="/<?= $sort ?>/<?= $timeFrame ?>/<?= $page + 1 ?>"><img src="assets/images/arrow-right.svg" alt="Next page"></a>
+                            <a class="icon24 loading" href="/<?= $sort ?>/<?= $timeFrame ?>/<?= $page + 1 ?>"><img src="assets/images/arrow-right.svg" alt="Next page"></a>
                         <?php else: ?>
-                            <a class="icon24" href="/<?= $sort ?>/<?= $page + 1 ?>"><img src="assets/images/arrow-right.svg" alt="Next page"></a>
+                            <a class="icon24 loading" href="/<?= $sort ?>/<?= $page + 1 ?>"><img src="assets/images/arrow-right.svg" alt="Next page"></a>
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>

@@ -1,3 +1,10 @@
+.return-to-post {
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px dashed var(--colorAccent);
+    text-align: center;
+}
+
 .post-detail-container {
     padding: 16px;
     border-radius: 8px;
@@ -15,43 +22,44 @@
     background: var(--colorSecondary);
 }
 
-.write-comment {
+/* Sort */
+.sort-container {
     display: flex;
-    flex-direction: column;
-    align-items: end;
+    flex-direction: row;
 }
 
-.btn-comment {
-    margin-top: 16px;
-    padding: 12px 16px;
-    border-radius: 8px;
-    color: var(--colorOnAccent);
-    background: var(--colorAccent);
-    border: none;
+.sort-container a {
+    font-size: 16px;
 }
 
-.btn-cancel {
-    margin-top: 16px;
-    padding: 12px 16px;
-    border-radius: 8px;
-    color: var(--colorOnPrimary);
-    background: var(--colorPrimary);
-    border: none;
+.comment .avatar {
+    position: relative;
 }
 
-.btn-comment:disabled, .btn-cancel:disabled {
-    opacity: .5;
+.comment {
+    position: relative;
 }
 
 /* Comment */
-.comment {
-    padding: 16px;
-    border-radius: 8px;
-    border: 2px dashed var(--colorSecondary);
+
+.comment-list {
+    position: relative;
+    height: 100%;
 }
 
 .comment .action-list {
     display: flex;
     width: 100%;
-    justify-content: end;
+    justify-content: start;
+}
+
+.comment .top {
+    align-items: start;
+}
+
+.btn-reply {
+    padding: 8px 0;
+    border: none;
+    background: var(--colorPrimary);
+    color: var(--colorAccent);
 }

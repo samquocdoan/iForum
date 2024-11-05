@@ -8,7 +8,7 @@
     </div>
 
     <a class="post-title word-action" href="/posts/<?php echo intval($post['id']); ?>">
-        <h1 class="title-extra-large"><?php echo htmlspecialchars($post['title']); ?></h1>
+        <h1 class="title-extra-large loading"><?php echo htmlspecialchars($post['title']); ?></h1>
     </a>
     <?php if ($post['tags'] !== null): ?>
         <div class="tag-container row-8">
